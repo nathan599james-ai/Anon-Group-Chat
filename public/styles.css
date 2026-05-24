@@ -1,6 +1,4 @@
-/* ==========================================================================
-   CSS CUSTOM PROPERTIES & BASE STYLES
-   ========================================================================== */
+*/
 :root {
     --bg-dark: #07050e;
     --bg-card: rgba(20, 16, 35, 0.45);
@@ -759,7 +757,13 @@ body {
     transition: var(--transition-smooth);
     animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     position: relative;
-    overflow: hidden;
+    
+    /* Responsive structural dynamic fixes */
+    display: flex;
+    flex-direction: column;
+    height: auto !important; 
+    min-height: 100px; 
+    overflow: visible; 
 }
 
 .whisper-card::before {
@@ -834,7 +838,7 @@ body {
     color: var(--text-muted);
 }
 
-/* Card Content Text */
+/* Card Content Text - Fixed wrapping structure */
 .card-content {
     font-size: 1rem;
     line-height: 1.6;
@@ -842,6 +846,7 @@ body {
     margin-bottom: 1.25rem;
     word-break: break-word;
     white-space: pre-wrap;
+    flex-grow: 1; 
 }
 
 /* Card Action Bar */
@@ -1128,10 +1133,21 @@ body {
     }
     
     .feed-panel {
-        height: 600px;
+        height: calc(100vh - 450px); /* Better view fit for screen layout height */
+        min-height: 550px;
     }
     
     .whisper-feed {
-        padding: 1.5rem;
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+    
+    .whisper-card {
+        padding: 1.25rem;
+    }
+    
+    .card-content {
+        font-size: 0.95rem; /* Better scaling on smaller phones */
+        margin-bottom: 1rem;
     }
 }
