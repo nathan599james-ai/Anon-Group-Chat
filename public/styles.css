@@ -1,14 +1,16 @@
-*/
 :root {
     --bg-dark: #07050e;
-    --bg-card: rgba(20, 16, 35, 0.45);
-    --border-color: rgba(255, 255, 255, 0.08);
+    /* FIXED: Increased opacity from 0.45 to 0.75 so dark background doesn't bleed through and wash out elements */
+    --bg-card: rgba(24, 20, 43, 0.75); 
+    --border-color: rgba(255, 255, 255, 0.12);
     --text-primary: #f3f4f6;
-    --text-secondary: #205dc6;
-    --text-muted: #1955cd;
+    
+    /* FIXED: Swapped out the dull, muddy blues for an electric, glowing neon blue/cyan */
+    --text-secondary: #00d2ff; 
+    --text-muted: #38bdf8; 
     
     --primary: #8b5cf6;
-    --primary-glow: rgba(139, 92, 246, 0.4);
+    --primary-glow: rgba(139, 92, 246, 0.5);
     --primary-hover: #7c3aed;
     --accent-red: #f43f5e;
     --accent-emerald: #10b981;
@@ -40,7 +42,7 @@ body {
     border-radius: 50%;
     filter: blur(140px);
     z-index: -1;
-    opacity: 0.4;
+    opacity: 0.45; /* Slight boost to glow visibility */
     pointer-events: none;
     mix-blend-mode: screen;
 }
@@ -88,7 +90,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(4, 2, 8, 0.85);
+    background: rgba(4, 2, 8, 0.88); /* Slightly darker to make login card pop */
     backdrop-filter: blur(30px);
     display: flex;
     align-items: center;
@@ -98,13 +100,14 @@ body {
 }
 
 .login-card {
-    background: rgba(20, 16, 35, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* FIXED: Replaced low opacity with a vivid solid base mixed with high glass-blur */
+    background: rgba(22, 18, 38, 0.85); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 24px;
     padding: 2.5rem;
     width: 100%;
     max-width: 460px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
     backdrop-filter: var(--glass-blur);
     animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -151,15 +154,15 @@ body {
 
 .input-group label {
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700; /* Bolder label text */
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .input-group input {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5); /* Deep dark background input contrast */
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
     padding: 0.85rem 1rem;
     color: white;
@@ -171,26 +174,26 @@ body {
 
 .input-group input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
 }
 
 /* Character Roll Showcase slot */
 .identity-roll-area {
     height: 170px;
-    border: 2px dashed rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     overflow: hidden;
     position: relative;
     transition: var(--transition-smooth);
 }
 
 .identity-roll-area.active {
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    background: rgba(106, 47, 244, 0.04);
+    border: 1px solid var(--text-secondary);
+    background: rgba(0, 210, 255, 0.05);
 }
 
 .identity-placeholder {
@@ -207,7 +210,7 @@ body {
 .question-mark {
     width: 48px;
     height: 48px;
-    opacity: 0.5;
+    opacity: 0.7; /* Brighter visibility */
 }
 
 .identity-profile {
@@ -251,8 +254,8 @@ body {
 
 /* Roll Identity button */
 .roll-btn {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 0.85rem;
     color: white;
@@ -268,8 +271,8 @@ body {
 }
 
 .roll-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 .roll-btn i {
@@ -382,7 +385,7 @@ body {
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    background: linear-gradient(to right, #fff, var(--text-secondary));
+    background: linear-gradient(to right, #fff, var(--text-muted));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -397,8 +400,8 @@ body {
 
 /* Active Profile Card */
 .user-profile-card {
-    background: rgba(139, 92, 246, 0.08);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.3);
     border-radius: 16px;
     padding: 1rem;
     display: flex;
@@ -441,15 +444,15 @@ body {
 }
 
 .reroll-btn-small {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
     padding: 0.4rem 0.6rem;
     color: var(--text-secondary);
     cursor: pointer;
     font-size: 0.75rem;
     font-family: 'Outfit', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 0.35rem;
@@ -458,8 +461,8 @@ body {
 
 .reroll-btn-small:hover {
     color: white;
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .reroll-btn-small i {
@@ -473,7 +476,7 @@ body {
     border-radius: 20px;
     padding: 1.75rem;
     backdrop-filter: var(--glass-blur);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card-header h2 {
@@ -498,8 +501,8 @@ body {
 
 #whisper-input {
     width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 14px;
     padding: 1rem;
     color: var(--text-primary);
@@ -513,8 +516,8 @@ body {
 
 #whisper-input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
-    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .char-counter {
@@ -522,7 +525,8 @@ body {
     bottom: 12px;
     right: 12px;
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: #fff; /* Crisp counter tracking */
+    opacity: 0.6;
 }
 
 /* Theme Grid Selector */
@@ -532,7 +536,7 @@ body {
 
 .theme-selector-section label {
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -608,7 +612,7 @@ body {
 .console-footer {
     margin-top: 2rem;
     font-size: 0.7rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.35);
     line-height: 1.5;
 }
 
@@ -758,7 +762,6 @@ body {
     animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     position: relative;
     
-    /* Responsive structural dynamic fixes */
     display: flex;
     flex-direction: column;
     height: auto !important; 
@@ -779,8 +782,8 @@ body {
 
 .whisper-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.25);
 }
 
 @keyframes slideInUp {
@@ -812,8 +815,8 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    border: 1px solid rgba(255,255,255,0.15);
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -835,10 +838,10 @@ body {
 
 .timestamp {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.5); /* Boosted timestamp readability */
 }
 
-/* Card Content Text - Fixed wrapping structure */
+/* Card Content Text */
 .card-content {
     font-size: 1rem;
     line-height: 1.6;
@@ -854,16 +857,16 @@ body {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: 0.85rem;
 }
 
 .action-btn {
     background: transparent;
     border: none;
-    color: var(--text-secondary);
+    color: var(--text-secondary); /* This will now be an incredibly bright cyan/blue! */
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600; /* Made slightly bolder for pop */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -922,59 +925,59 @@ body {
 }
 
 .theme-purple {
-    background: linear-gradient(135deg, rgba(162, 28, 175, 0.15) 0%, rgba(63, 66, 234, 0.15) 100%);
-    border-color: rgba(162, 28, 175, 0.3);
+    background: linear-gradient(135deg, rgba(162, 28, 175, 0.22) 0%, rgba(63, 66, 234, 0.22) 100%);
+    border-color: rgba(162, 28, 175, 0.45);
 }
 .theme-purple::before {
     background: linear-gradient(90deg, #a21caf 0%, #6366f1 100%);
 }
 .theme-purple:hover {
-    border-color: rgba(162, 28, 175, 0.5);
+    border-color: rgba(162, 28, 175, 0.65);
 }
 
 .theme-sunset {
-    background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(234, 179, 8, 0.15) 100%);
-    border-color: rgba(244, 63, 94, 0.3);
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.22) 0%, rgba(234, 179, 8, 0.22) 100%);
+    border-color: rgba(244, 63, 94, 0.45);
 }
 .theme-sunset::before {
     background: linear-gradient(90deg, #f43f5e 0%, #eab308 100%);
 }
 .theme-sunset:hover {
-    border-color: rgba(244, 63, 94, 0.5);
+    border-color: rgba(244, 63, 94, 0.65);
 }
 
 .theme-emerald {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
-    border-color: rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(6, 182, 212, 0.22) 100%);
+    border-color: rgba(16, 185, 129, 0.45);
 }
 .theme-emerald::before {
     background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
 }
 .theme-emerald:hover {
-    border-color: rgba(16, 185, 129, 0.5);
+    border-color: rgba(16, 185, 129, 0.65);
 }
 
 .theme-glass {
-    background: linear-gradient(135deg, rgba(48, 51, 243, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(48, 51, 243, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
     backdrop-filter: blur(30px);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
 }
 .theme-glass::before {
     background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
 }
 .theme-glass:hover {
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .theme-cyberpunk {
-    background: linear-gradient(135deg, rgba(255, 0, 127, 0.15) 0%, rgba(127, 0, 255, 0.15) 100%);
-    border-color: rgba(255, 0, 127, 0.35);
+    background: linear-gradient(135deg, rgba(255, 0, 127, 0.22) 0%, rgba(127, 0, 255, 0.22) 100%);
+    border-color: rgba(255, 0, 127, 0.5);
 }
 .theme-cyberpunk::before {
     background: linear-gradient(90deg, #ff007f 0%, #7f00ff 100%);
 }
 .theme-cyberpunk:hover {
-    border-color: rgba(255, 0, 127, 0.55);
+    border-color: rgba(255, 0, 127, 0.7);
 }
 
 /* ==========================================================================
@@ -990,7 +993,7 @@ body {
 
 .comments-drawer.open {
     max-height: 500px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     margin-top: 0.85rem;
     padding-top: 0.85rem;
 }
@@ -1010,18 +1013,17 @@ body {
 }
 
 .comments-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 99px;
 }
 
 .comment-item {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     animation: slideInUp 0.3s ease forwards;
 }
-
 .comment-meta {
     display: flex;
     justify-content: space-between;
@@ -1035,7 +1037,7 @@ body {
 }
 
 .comment-time {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .comment-text {
@@ -1047,7 +1049,7 @@ body {
 
 .comment-empty {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.4);
     text-align: center;
     padding: 1rem 0;
 }
@@ -1066,8 +1068,8 @@ body {
 
 .comment-input {
     width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
     padding: 0.6rem 0.8rem;
     color: var(--text-primary);
@@ -1079,7 +1081,7 @@ body {
 
 .comment-input:focus {
     border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .comment-submit-btn {
@@ -1133,7 +1135,7 @@ body {
     }
     
     .feed-panel {
-        height: calc(100vh - 450px); /* Better view fit for screen layout height */
+        height: calc(100vh - 450px); 
         min-height: 550px;
     }
     
@@ -1147,7 +1149,7 @@ body {
     }
     
     .card-content {
-        font-size: 0.95rem; /* Better scaling on smaller phones */
+        font-size: 0.95rem; 
         margin-bottom: 1rem;
     }
 }
