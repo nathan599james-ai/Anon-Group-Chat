@@ -4,8 +4,8 @@
     --bg-card: rgba(20, 16, 35, 0.45);
     --border-color: rgba(255, 255, 255, 0.08);
     --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
+    --text-secondary: #205dc6;
+    --text-muted: #1955cd;
     
     --primary: #8b5cf6;
     --primary-glow: rgba(139, 92, 246, 0.4);
@@ -48,7 +48,7 @@ body {
 .glow-1 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(139,92,246,0.3) 0%, rgba(99,102,241,0.05) 70%);
+    background: radial-gradient(circle, rgba(139,92,246,0.3) 0%, rgba(66, 69, 228, 0.05) 70%);
     top: -100px;
     left: -100px;
     animation: floatGlow 15s infinite ease-in-out alternate;
@@ -57,7 +57,7 @@ body {
 .glow-2 {
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, rgba(139,92,246,0.02) 80%);
+    background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, rgba(104, 46, 238, 0.02) 80%);
     bottom: -150px;
     right: -100px;
     animation: floatGlow 20s infinite ease-in-out alternate 2s;
@@ -66,7 +66,7 @@ body {
 .glow-3 {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(16,185,129,0.02) 80%);
+    background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, rgba(38, 240, 173, 0.02) 80%);
     top: 50%;
     left: 40%;
     transform: translate(-50%, -50%);
@@ -190,7 +190,7 @@ body {
 
 .identity-roll-area.active {
     border: 1px solid rgba(139, 92, 246, 0.3);
-    background: rgba(139, 92, 246, 0.04);
+    background: rgba(106, 47, 244, 0.04);
 }
 
 .identity-placeholder {
@@ -922,7 +922,7 @@ body {
 }
 
 .theme-purple {
-    background: linear-gradient(135deg, rgba(162, 28, 175, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(162, 28, 175, 0.15) 0%, rgba(63, 66, 234, 0.15) 100%);
     border-color: rgba(162, 28, 175, 0.3);
 }
 .theme-purple::before {
@@ -955,7 +955,7 @@ body {
 }
 
 .theme-glass {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(48, 51, 243, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
     backdrop-filter: blur(30px);
     border-color: rgba(255, 255, 255, 0.12);
 }
