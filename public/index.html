@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper — Anonymous Anime Group Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
+    <div class="glow-orb glow-3"></div>
+
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-card">
+            <header class="login-header">
+                <div class="logo-icon">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <h2>Join Whisper</h2>
+                <p>An anonymous group chat. You will be assigned a random legendary Anime Character profile to protect your identity.</p>
+            </header>
+
+            <div class="login-form">
+                <div class="input-group">
+                    <label for="username-input">Your Nickname (Optional)</label>
+                    <input type="text" id="username-input" placeholder="Type a custom nickname or leave blank..." maxlength="15" />
+                </div>
+
+                <div id="identity-roll-area" class="identity-roll-area">
+                    <div class="identity-placeholder">
+                        <i data-lucide="help-circle" class="question-mark"></i>
+                    </div>
+                    <div class="identity-profile" style="display: none;">
+                        <img id="identity-avatar" src="" alt="Avatar" class="reveal-avatar" />
+                        <h3 id="identity-name">Anime Character</h3>
+                        <span class="identity-badge">Your Chat Persona</span>
+                    </div>
+                </div>
+
+                <button id="roll-identity-btn" class="roll-btn">
+                    <span>Discover Anime Identity</span>
+                    <i data-lucide="dices"></i>
+                </button>
+
+                <button id="enter-chat-btn" class="enter-btn" disabled>
+                    <span>Enter Room</span>
+                    <i data-lucide="arrow-right-circle"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container" style="display: none;">
+        <aside class="console-panel">
+            <div>
+                <header class="logo-header">
+                    <div class="logo-icon">
+                        <i data-lucide="shield-alert"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Whisper</h1>
+                        <span>Anime Group Chat</span>
+                    </div>
+                </header>
+
+                <div class="user-profile-card">
+                    <div class="profile-meta">
+                        <img id="user-avatar-img" src="assets/avatar_naruto.png" alt="My Profile Avatar" class="profile-avatar" />
+                        <div class="profile-info">
+                            <span class="profile-label">Chatting As</span>
+                            <h3 id="user-profile-name">Naruto Uzumaki</h3>
+                        </div>
+                    </div>
+                    <button id="reroll-btn" class="reroll-btn-small" title="Change Identity">
+                        <i data-lucide="refresh-cw"></i>
+                        <span>Re-roll</span>
+                    </button>
+                </div>
+
+                <div class="console-card">
+                    <div class="card-header">
+                        <h2>Share a Whisper</h2>
+                        <p>Say whatever you want under your anime character's mask. Absolutely anonymous.</p>
+                    </div>
+
+                    <div class="compose-area">
+                        <textarea 
+                            id="whisper-input" 
+                            placeholder="Type your anonymous whisper here..." 
+                            maxlength="300"
+                            rows="6"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="char-count">0</span>/300
+                        </div>
+                    </div>
+
+                    <div class="theme-selector-section">
+                        <label>Card Theme</label>
+                        <div class="theme-grid">
+                            <button class="theme-btn active" data-theme="theme-default" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1);"></button>
+                            <button class="theme-btn" data-theme="theme-purple" style="background: linear-gradient(135deg, #a21caf 0%, #6366f1 100%);"></button>
+                            <button class="theme-btn" data-theme="theme-sunset" style="background: linear-gradient(135deg, #f43f5e 0%, #eab308 100%);"></button>
+                            <button class="theme-btn" data-theme="theme-emerald" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);"></button>
+                            <button class="theme-btn" data-theme="theme-glass" style="background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(168,85,247,0.2) 100%);"></button>
+                            <button class="theme-btn" data-theme="theme-cyberpunk" style="background: linear-gradient(135deg, #ff007f 0%, #7f00ff 100%);"></button>
+                        </div>
+                    </div>
+
+                    <button id="send-btn" class="send-btn">
+                        <span>Send Anonymously</span>
+                        <i data-lucide="send"></i>
+                    </button>
+                </div>
+            </div>
+
+            <footer class="console-footer">
+                <p>Every whisper is shared instantly. We collect no IP addresses, headers, or metadata. Keep it safe, keep it anonymous.</p>
+            </footer>
+        </aside>
+
+        <main class="feed-panel">
+            <header class="feed-header">
+                <div class="feed-title-area">
+                    <h2>Live Whispers</h2>
+                    <span class="active-badge">
+                        <span class="pulse-dot"></span>
+                        <span id="active-users">Connecting...</span>
+                    </span>
+                </div>
+                <div class="feed-actions">
+                    <button id="refresh-btn" class="icon-action-btn" title="Refresh Feed">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div id="whisper-feed" class="whisper-feed">
+                <div class="feed-placeholder" id="feed-placeholder">
+                    <i data-lucide="message-square" class="placeholder-icon"></i>
+                    <p>No whispers yet. Be the first to share one!</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
