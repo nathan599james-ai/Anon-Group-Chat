@@ -345,7 +345,9 @@ socket.on("error_message", (warningText) => {
     alert(warningText);
 });
 
-// AUTOMATION AUTO-FILL: Run this right when the page loads up!
+// ============================================================================
+// 7. AUTOMATION AUTO-FILL & SYSTEM SYNC
+// ============================================================================
 window.addEventListener('DOMContentLoaded', () => {
     const localNickname = localStorage.getItem('savedNickname');
     const localCharacter = localStorage.getItem('savedCharacter');
@@ -356,6 +358,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const nicknameInputField = document.querySelector('#username-input');
         if (nicknameInputField) {
             nicknameInputField.value = localNickname;
+            
+            // Set local browser memory profile state immediately on page entry
+            currentPersona = {
+                name: localCharacter,
+                series: localSeries || "Chit-Chat Network",
+                avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(localCharacter)}`
+            };
             
             // Automatically sync identity details straight to the background service channels
             socket.emit('assign_persona', {
