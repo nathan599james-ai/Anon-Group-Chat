@@ -113,6 +113,7 @@ function enterChatroom() {
     const characterNameToSend = currentPersona ? currentPersona.name : "Anonymous Otaku";
     const characterSeriesToSend = currentPersona ? currentPersona.series : "Chit-Chat Network";
 
+    // Switch screen visibility fields layout mappings
     loginOverlay.style.display = "none";
     appContainer.style.display = "grid"; 
     
@@ -217,6 +218,11 @@ themeButtons.forEach(button => {
 });
 
 rerollBtn.addEventListener("click", () => {
+    // Clear browser cache database profiles completely on manual sign-out
+    localStorage.removeItem('savedNickname');
+    localStorage.removeItem('savedCharacter');
+    localStorage.removeItem('savedSeries');
+
     currentPersona = null;
     usernameInput.value = "";
     identityPlaceholder.style.display = "flex";
@@ -266,6 +272,13 @@ refreshBtn.addEventListener("click", () => {
 // 6. CHANNEL SYSTEM COMMUNICATIONS
 // ============================================================================
 socket.on('persona_confirmed', (confirmedData) => {
+    // If the server confirms this profile layout configuration is brand new, save it locally!
+    if (confirmedData.saveToLocal && confirmedData.nickname) {
+        localStorage.setItem('savedNickname', confirmedData.nickname);
+        localStorage.setItem('savedCharacter', confirmedData.characterName);
+        localStorage.setItem('savedSeries', confirmedData.characterSeries);
+    }
+
     const characterData = ANIME_CHARACTERS.find(c => c.name === confirmedData.characterName);
     
     if (characterData) {
@@ -288,6 +301,11 @@ socket.on('persona_confirmed', (confirmedData) => {
 
     userProfileName.textContent = currentPersona.name;
     userAvatarImg.src = currentPersona.avatar;
+
+    // Force interface shifts if triggered by page automation routines
+    loginOverlay.style.display = "none";
+    appContainer.style.display = "grid";
+    console.log(`Successfully logged in as: ${confirmedData.characterName}`);
 });
 
 socket.on("online_count", (count) => {
@@ -325,6 +343,28 @@ socket.on("like_confirmed", (data) => {
 
 socket.on("error_message", (warningText) => {
     alert(warningText);
+});
+
+// AUTOMATION AUTO-FILL: Run this right when the page loads up!
+window.addEventListener('DOMContentLoaded', () => {
+    const localNickname = localStorage.getItem('savedNickname');
+    const localCharacter = localStorage.getItem('savedCharacter');
+    const localSeries = localStorage.getItem('savedSeries');
+    
+    if (localNickname && localCharacter) {
+        console.log(`Found a returning identity profile: ${localNickname}`);
+        const nicknameInputField = document.querySelector('#username-input');
+        if (nicknameInputField) {
+            nicknameInputField.value = localNickname;
+            
+            // Automatically sync identity details straight to the background service channels
+            socket.emit('assign_persona', {
+                nickname: localNickname,
+                characterName: localCharacter,
+                characterSeries: localSeries || "Chit-Chat Network"
+            });
+        }
+    }
 });
 
 updateIcons();
