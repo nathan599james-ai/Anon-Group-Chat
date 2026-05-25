@@ -4,6 +4,8 @@
 const express = require('express');
 const http = require('http');            
 const { Server } = require('socket.io'); 
+const fs = require('fs'); // Added for permanent JSON file tracking
+const path = require('path');
 
 const app = express();
 app.use(express.static('public'));
@@ -16,14 +18,46 @@ const io = new Server(server, {
   }
 });
 
+// File path where user-character assignments are saved across server restarts
+const DATA_FILE = path.join(__dirname, 'remembered_users.json');
+
 // ============================================================================
-// 2. IN-MEMORY APPLICATION DATABASE COLLECTIONS
+// 2. DATABASE COLLECTIONS & STORAGE LAUNCHERS
 // ============================================================================
-// Key: socket.id, Value: { characterName, characterSeries, nickname, joinedAt, lastMessageAt }
+// Active online instances (Key: socket.id, Value: user details)
 const activeSessions = new Map(); 
 
-// Key: nickname (lowercase), Value: { characterName, characterSeries }
-const rememberedUsers = new Map();
+// Master storage map (Key: nickname lowercase, Value: { characterName, characterSeries })
+let rememberedUsers = new Map();
+
+// Helper to load profiles from file on boot
+function loadRememberedUsers() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const rawData = fs.readFileSync(DATA_FILE, 'utf8');
+      const parsed = JSON.parse(rawData);
+      rememberedUsers = new Map(Object.entries(parsed));
+      console.log(`💾 Loaded ${rememberedUsers.size} persistent user records safely from disk.`);
+    } else {
+      console.log("ℹ️ No profile database found. Initializing a clean storage pipeline.");
+    }
+  } catch (error) {
+    console.error("⚠️ Failed to read persistent user file storage profiles:", error);
+  }
+}
+
+// Helper to save profiles to file whenever a new user registers
+function saveRememberedUsers() {
+  try {
+    const obj = Object.fromEntries(rememberedUsers);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(obj, null, 2), 'utf8');
+  } catch (error) {
+    console.error("⚠️ Local file system disk backup sequence failed:", error);
+  }
+}
+
+// Initialize the persistent database files instantly on launch
+loadRememberedUsers();
 
 const whispers = [];
 
@@ -46,7 +80,7 @@ const SERVER_ANIME_CHARACTERS = [
 io.on('connection', (socket) => {
   console.log(`⚡ A user connected! Unique ID: ${socket.id}`);
 
-  // --- NEW ENGINE EVENT: REAL-TIME NICKNAME INTERCEPT LOOKUP ---
+  // --- REAL-TIME NICKNAME INTERCEPT LOOKUP ---
   socket.on('check_returning_nickname', (nameToCheck) => {
     if (!nameToCheck) return;
     const cleanKey = nameToCheck.trim().toLowerCase();
@@ -67,8 +101,12 @@ io.on('connection', (socket) => {
     const rawNickname = (data.nickname || "").trim();
     const cleanNicknameKey = rawNickname.toLowerCase();
 
+    if (!rawNickname) {
+        return socket.emit('error_message', 'Nickname is required to enter the room!');
+    }
+
     // 1. Process returning validation structures
-    if (cleanNicknameKey && rememberedUsers.has(cleanNicknameKey)) {
+    if (rememberedUsers.has(cleanNicknameKey)) {
         const savedProfile = rememberedUsers.get(cleanNicknameKey);
         
         activeSessions.set(socket.id, {
@@ -90,25 +128,27 @@ io.on('connection', (socket) => {
         return socket.emit('whisper_history', whispers.slice(-50));
     }
 
-    // 2. Fallback handling checking for active user collisions
+    // 2. Strict Exclusivity Check: Collect ALL characters claimed by anyone, online OR offline
+    const globallyClaimedCharacters = Array.from(rememberedUsers.values()).map(u => u.characterName);
+    
     let targetedCharacter = data.characterName || "Anonymous Otaku";
     let targetedSeries = data.characterSeries || "Chit-Chat Network";
     
-    const takenCharacters = Array.from(activeSessions.values()).map(u => u.characterName);
-    
-    if (takenCharacters.includes(targetedCharacter)) {
-        const availablePool = SERVER_ANIME_CHARACTERS.filter(char => !takenCharacters.includes(char));
+    // Check if the requested character belongs to someone else already
+    if (globallyClaimedCharacters.includes(targetedCharacter)) {
+        // Filter out any characters that have been claimed globally by ANY registered user
+        const availablePool = SERVER_ANIME_CHARACTERS.filter(char => !globallyClaimedCharacters.includes(char));
         
         if (availablePool.length === 0) {
-            return socket.emit('error_message', 'The chatroom is completely full! All anime personas are taken.');
+            return socket.emit('error_message', 'The chatroom is completely full! All anime personas have been permanently claimed.');
         }
 
-        // Dynamically shift persona handle to prevent runtime overlapping active clients
+        // Dynamically assign an unallocated character from the free pool
         targetedCharacter = availablePool[Math.floor(Math.random() * availablePool.length)];
         targetedSeries = "Alternative Allocation"; 
     }
 
-    // Secure memory state allocation
+    // 3. Allocate profile inside active session memory maps
     activeSessions.set(socket.id, {
       characterName: targetedCharacter,
       characterSeries: targetedSeries,
@@ -116,14 +156,16 @@ io.on('connection', (socket) => {
       joinedAt: new Date()
     });
 
-    if (cleanNicknameKey) {
-        rememberedUsers.set(cleanNicknameKey, {
-            characterName: targetedCharacter,
-            characterSeries: targetedSeries
-        });
-    }
+    // Save the nickname-to-character block to our persistent runtime tracker maps
+    rememberedUsers.set(cleanNicknameKey, {
+        characterName: targetedCharacter,
+        characterSeries: targetedSeries
+    });
 
-    console.log(`👤 New User: ${targetedCharacter} has entered the room.`);
+    // Flush change to the local JSON file so it isn't wiped if Render resets
+    saveRememberedUsers();
+
+    console.log(`👤 New User Registered: ${rawNickname} has claimed ${targetedCharacter}!`);
 
     socket.emit('persona_confirmed', {
         characterName: targetedCharacter,
